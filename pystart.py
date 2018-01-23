@@ -19,14 +19,16 @@ def support():
         reply = response.serialize()
     elif(msg.upper() != "BYE"):
         reply = "Sorry Didn't get you? Try these questions <br>"
-        sample_questions = ["Will i get a job after training?", "When is the next workshop?", "What is taught in 3 days workshop?"]
+        sample_questions = "Will i get a job after training?   "+ "When is the next workshop?  " +  "What is taught in 3 days workshop?"
         reply += sample_questions
     else:
         reply = "Thanks for talking to me, see you soon."
     return json.dumps(reply)
 
-@app.route('/support/<msg>',methods = ['POST', 'GET'])
-def support(msg):
+
+
+@app.route('/talk/<msg>',methods = ['POST', 'GET'])
+def talk(msg="Hi"):
     chatbot = ChatBot(
         'Pyson',
         trainer='chatterbot.trainers.ListTrainer'
@@ -38,7 +40,7 @@ def support(msg):
         reply = response.serialize()
     elif(msg.upper() != "BYE"):
         reply = "Sorry Didn't get you? Try these questions <br>"
-        sample_questions = ["Will i get a job after training?", "When is the next workshop?", "What is taught in 3 days workshop?"]
+        sample_questions = "Will i get a job after training?  - "+ "When is the next workshop?   - " + "What is taught in 3 days workshop?"
         reply += sample_questions
     else:
         reply = "Thanks for talking to me, see you soon."
