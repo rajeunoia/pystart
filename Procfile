@@ -1,2 +1,2 @@
 # Procfile
-web: python pystart.py
+web: gunicorn app:pystart
