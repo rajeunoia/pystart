@@ -1,2 +1,2 @@
 # Procfile
-web: gunicorn --preload firefly.main:app -e FIREFLY_FUNCTIONS="pystart.support"
+web: gunicorn app:app

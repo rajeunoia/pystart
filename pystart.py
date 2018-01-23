@@ -1,14 +1,18 @@
 # -*- coding: utf-8 -*-
 from chatterbot import ChatBot
 import json
-# Create a new chat bot named Pyson
+from flask import Flask, redirect, url_for, request
+app = Flask(__name__)
 
-def support(msg):
+
+# Create a new chat bot named Pyson
+@app.route('/support',methods = ['POST', 'GET'])
+def support():
     chatbot = ChatBot(
         'Pyson',
         trainer='chatterbot.trainers.ListTrainer'
     )
-
+    #msg = "Hi"
     reply = ""
     response = chatbot.get_response(msg)
     if(response.confidence > 0.5 and msg.upper() != "BYE"):
@@ -19,4 +23,10 @@ def support(msg):
         reply += sample_questions
     else:
         reply = "Thanks for talking to me, see you soon."
-    return reply
+    return json.dumps(reply)
+
+@app.route('/token',methods = ['POST', 'GET'])
+def token():
+    return ""
+if __name__ == '__main__':
+   app.run()
