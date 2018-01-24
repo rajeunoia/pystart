@@ -83,10 +83,11 @@ def support():
                     if "message" in event:
                         message = event["message"]
                         sender_id = event["sender"]["id"]
-                        response = talk(message["text"])
-                        print(response)
-                        if "text" in response:
-                            send_response(sender_id, response["text"])
+                        resp = talk(message["text"])
+                        print("Outside - ",resp)
+                        if "text" in resp:
+                            print("Inside - ",resp)
+                            send_response(sender_id, resp)
                     
                     
     return "ok",200    
