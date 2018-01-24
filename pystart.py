@@ -77,7 +77,7 @@ def support():
     if request.method == 'POST':
         #handle_post_events(request) - if required
         input_request_data = json.loads(request.data.decode('utf8'))
-        print(input_request_data)
+        print("Input message - ",input_request_data)
         if input_request_data["object"] == "page":
             message_entries = input_request_data['entry']
             for entry in message_entries:
@@ -87,10 +87,8 @@ def support():
                         sender_id = event["sender"]["id"]
                         recipient_id = event["recipient"]["id"]
                         resp = talk(message["text"])
-                        print("Outside - ",resp)
-                        if "text" in resp:
-                            print("Inside - ",resp)
-                            send_response(sender_id, resp)
+                        print("Output Response - ",resp)
+                        send_response(sender_id, resp)
                     
                     
     return "ok",200    
