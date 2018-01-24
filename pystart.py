@@ -81,7 +81,7 @@ def support():
                 for event in entry["messaging"]:
                     message = event["message"]
                     sender_id = event["sender"]["id"]
-                    response = talk(message)
+                    response = talk(message["text"])
                     send_response(sender_id, response)
                     
                     
