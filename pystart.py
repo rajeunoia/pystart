@@ -85,7 +85,7 @@ def support():
                     send_response(sender_id, response)
                     
                     
-        
+    return response    
  
 
 
