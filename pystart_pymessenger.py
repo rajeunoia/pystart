@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from chatterbot import ChatBot
 import json
-from pymessager.message import Messager
+from pymessenger.bot import Bot
 from flask import Flask, redirect, url_for, request
 app = Flask(__name__)
 
@@ -13,7 +13,7 @@ def get_access_token():
     return token
     
 
-client = Messager(get_access_token())   
+client = Bot(get_access_token())   
     
 
 #handle message
@@ -42,7 +42,7 @@ def talk(msg="Hi"):
 def send_response(psid, response):
     #code to call graph api with response and token
     print(psid,response)
-    client.send_text(psid,response)
+    client.send_text_message(psid,response)
 
 
 
