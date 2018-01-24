@@ -88,8 +88,8 @@ def support():
                         resp = talk(message["text"])
                         print("Outside - ",resp)
                         if "text" in resp:
-                            print("Inside - ",resp["text"])
-                            send_response(sender_id, resp["text"])
+                            print("Inside - ",resp)
+                            send_response(sender_id, resp)
                     
                     
     return "ok",200    
