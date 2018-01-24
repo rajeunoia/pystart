@@ -89,7 +89,7 @@ def support():
                         print("Outside - ",resp)
                         if "text" in resp:
                             print("Inside - ",resp)
-                            send_response(recipient_id, resp)
+                            send_response(sender_id, resp)
                     
                     
     return "ok",200    
