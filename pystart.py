@@ -4,36 +4,16 @@ import json
 from pymessager.message import Messager
 from flask import Flask, redirect, url_for, request
 app = Flask(__name__)
-client = Messager(get_access_token())
 
-# Create a new chat bot named Pyson
-@app.route('/support',methods = ['POST', 'GET'])
-def support():
+
+
+#Get access token 
+def get_access_token():
+    token = "EAAbTWtBx3EEBAPICjzhEI3fuZB2BjvZBEpZArTq8XZAwnnFeI5BqFYPTT8TgJpaLEYOGs8L0NHE1ZALwZCoK4PnGyBCRl0ULBq9Ygw4IjCxZCneYNsV3kQLZApummj4y054rpTZCEySxLAZCuqHhymfMAqMzi9LqSMGxVRsfOLwExx1QZDZD"
+    return token
     
-    if request.method == 'GET':
-        mode = request.args.get('hub.mode')    
-        verify_tkn = request.args.get('hub.verify_token')    
-        challenge = request.args.get('hub.challenge') 
-        if mode=="subscribe" and verify_token(verify_tkn):
-            return challenge
-    if request.method == 'POST':
-        #handle_post_events(request) - if required
-        input_request_data = json.loads(request.data.decode('utf8'))
-        if input_request_data["object"] == "page":
-            message_entries = input_request_data['entry']
-            for entry in message_entries:
-                for event in entry["messaging"]:
-                    message = event["message"]
-                    sender_id = event["sender"]["id"]
-                    response = talk(message)
-                    send_response(sender_id, response)
-                    
-                    
-        
-    
-#handle post events from facebook
-#def handle_post_events(request):
-    
+
+client = Messager(get_access_token())   
     
 
 #handle message
@@ -75,17 +55,38 @@ def verify_token(verify_tkn):
     else:
         return False
 
-#Get access token 
-def get_access_token():
-    token = "EAAbTWtBx3EEBAPICjzhEI3fuZB2BjvZBEpZArTq8XZAwnnFeI5BqFYPTT8TgJpaLEYOGs8L0NHE1ZALwZCoK4PnGyBCRl0ULBq9Ygw4IjCxZCneYNsV3kQLZApummj4y054rpTZCEySxLAZCuqHhymfMAqMzi9LqSMGxVRsfOLwExx1QZDZD"
-    return token
-    
 
 #handle postback
 def handle_postback(psid,recieved_postback):
     
     return ""
-
+    
+    
+# Create a new chat bot named Pyson
+@app.route('/support',methods = ['POST', 'GET'])
+def support():
+    
+    if request.method == 'GET':
+        mode = request.args.get('hub.mode')    
+        verify_tkn = request.args.get('hub.verify_token')    
+        challenge = request.args.get('hub.challenge') 
+        if mode=="subscribe" and verify_token(verify_tkn):
+            return challenge
+    if request.method == 'POST':
+        #handle_post_events(request) - if required
+        input_request_data = json.loads(request.data.decode('utf8'))
+        if input_request_data["object"] == "page":
+            message_entries = input_request_data['entry']
+            for entry in message_entries:
+                for event in entry["messaging"]:
+                    message = event["message"]
+                    sender_id = event["sender"]["id"]
+                    response = talk(message)
+                    send_response(sender_id, response)
+                    
+                    
+        
+ 
 
 
 
