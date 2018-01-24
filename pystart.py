@@ -28,13 +28,14 @@ def talk(msg="Hi"):
     resp = chatbot.get_response(msg)
     if(resp.confidence > 0.5 and msg.upper() != "BYE"):
         reply = resp.serialize()
+        reply = reply["text"]
     elif(msg.upper() != "BYE"):
         reply = "Sorry Didn't get you? Try these questions <br>"
         sample_questions = "Will i get a job after training?  - "+ "When is the next workshop?   - " + "What is taught in 3 days workshop?"
         reply += sample_questions
     else:
         reply = "Thanks for talking to me, see you soon."
-    return json.dumps(reply)
+    return reply
 
 
 
