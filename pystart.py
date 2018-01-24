@@ -41,7 +41,7 @@ def talk(msg="Hi"):
 #return response to messenger
 def send_response(psid, response):
     #code to call graph api with response and token
-    client.send_text(sender_id,response)
+    client.send_text(psid,response)
 
 
 
