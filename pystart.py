@@ -80,11 +80,13 @@ def support():
             message_entries = input_request_data['entry']
             for entry in message_entries:
                 for event in entry["messaging"]:
-                    message = event["message"]
-                    sender_id = event["sender"]["id"]
-                    response = talk(message["text"])
-                    print(response)
-                    send_response(sender_id, response["text"])
+                    if "message" in event:
+                        message = event["message"]
+                        sender_id = event["sender"]["id"]
+                        response = talk(message["text"])
+                        print(response)
+                        if "text" in response:
+                            send_response(sender_id, response["text"])
                     
                     
     return "ok",200    
