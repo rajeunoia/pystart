@@ -80,17 +80,16 @@ def support():
         if input_request_data["object"] == "page":
             message_entries = input_request_data['entry']
             for entry in message_entries:
-                if "messaging" in entry[0]:
-                    for event in entry["messaging"]:
-                        if "message" in event:
-                            message = event["message"]
-                            sender_id = event["sender"]["id"]
-                            recipient_id = event["recipient"]["id"]
-                            resp = talk(message["text"])
-                            print("Outside - ",resp)
-                            if "text" in resp:
-                                print("Inside - ",resp)
-                                send_response(recipient_id, resp)
+                for event in entry["messaging"]:
+                    if "message" in event:
+                        message = event["message"]
+                        sender_id = event["sender"]["id"]
+                        recipient_id = event["recipient"]["id"]
+                        resp = talk(message["text"])
+                        print("Outside - ",resp)
+                        if "text" in resp:
+                            print("Inside - ",resp)
+                            send_response(recipient_id, resp)
                     
                     
     return "ok",200    
