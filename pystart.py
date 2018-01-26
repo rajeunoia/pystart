@@ -21,7 +21,8 @@ client = Bot(get_access_token())
 def talk(msg="Hi"):
     chatbot = ChatBot(
         'Pyson',
-        trainer='chatterbot.trainers.ListTrainer'
+        trainer='chatterbot.trainers.ListTrainer',
+        read_only=True
     )
     #msg = "Hi"
     reply = ""

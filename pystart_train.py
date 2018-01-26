@@ -27,7 +27,11 @@ general_conversation = [
     "I am fine",
     "Good to know. shall we talk about PythonWorkshops",
     "Pyson",
-    "Yes, How can i help you?"
+    "Yes, How can i help you?", 
+    "Thank you", 
+    "No mention, its my pleasure talking to you", 
+    "who are you?",
+    "Pyson - Pythonworkshops support Team."
     
         
 ]
@@ -46,7 +50,9 @@ faqs_pystart = [
     "why do we program ?",
     "we program to automate human tasks", 
     "What is the workshop duration, how many days? ",
-    "The combo workshop is 3 days, Intro to programming is 1 day, Python programming and Advanced Python is 2 days."
+    "The combo workshop is 3 days, Intro to programming is 1 day, Python programming and Advanced Python is 2 days.",
+    "What is pythonworkshops?",
+    "Python workshops is our objective to spread programming across different communities, especially focused on python."
         
 ]
 
@@ -67,12 +73,12 @@ def learn_from_json(filename):
     chatbot.train(faqs)
 
 
-learn_from_json("faqs_general.txt")
-learn_from_json("faqs_extending.txt")
-learn_from_json("faqs_gui.txt")
-learn_from_json("faqs_library.txt")
-learn_from_json("faqs_windows.txt")
-learn_from_json("faqs_programming.txt")
+learn_from_json("./input/faqs_general.txt")
+learn_from_json("./input/faqs_extending.txt")
+learn_from_json("./input/faqs_gui.txt")
+learn_from_json("./input/faqs_library.txt")
+learn_from_json("./input/faqs_windows.txt")
+learn_from_json("./input/faqs_programming.txt")
 
 
 msg = ""
