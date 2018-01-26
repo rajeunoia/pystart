@@ -94,7 +94,17 @@ def support():
                     
     return "ok",200    
  
-
+# secure method to train the bot, this should not be exposed to external people
+@app.route('/train',methods = ['GET'])
+def train():
+    if request.method == 'GET':
+        question = request.args.get('question')    
+        answer = request.args.get('answer')
+        trainbot = ChatBot(
+        'Pyson',
+        trainer='chatterbot.trainers.ListTrainer')
+        trainbot.train([question,answer])
+    return "ok",200          
 
 
 if __name__ == '__main__':
