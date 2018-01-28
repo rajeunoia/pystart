@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from chatterbot import ChatBot
 import json
+import sqlite3 as sq
 from pymessenger.bot import Bot
 from flask import Flask, redirect, url_for, request
 app = Flask(__name__)
@@ -13,7 +14,27 @@ def get_access_token():
     return token
     
 
-client = Bot(get_access_token())   
+client = Bot(get_access_token())  
+
+
+def write_questions_to_db(question, answer=""):
+    conn = sq.connect("pw_unknown_question.db")
+    if table_exists(conn,"questions"):
+        conn.execute('insert into questions("question","answer") values ("'+question+'","'+answer+'")')
+    else:
+        conn.execute('create table  questions ("id" INTEGER PRIMARY KEY AUTOINCREMENT,"question" CHAR(100) NOT NULL,"answer" CHAR(100))')
+        conn.execute('insert into questions("id","question","answer") values (1,"'+question+'","'+answer+'")')
+    conn.commit()    
+    conn.close()
+    
+def table_exists(conn,table_name):
+    result = conn.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='"+table_name+"'")
+    result_data = result.fetchall()
+    if len(result_data)>0 and result_data[0][0] == table_name:
+        return True
+    else: 
+        return False
+
     
 
 #handle message
@@ -34,6 +55,7 @@ def talk(msg="Hi"):
         reply = "Sorry Didn't get you? Try these questions "
         sample_questions = "Try: Will i get a job after training?  - "+ "When is the next workshop?   - " + "What is taught in 3 days workshop?"
         reply += sample_questions
+        write_questions_to_db(msg)
     else:
         reply = "Thanks for talking to me, see you soon."
     return reply
