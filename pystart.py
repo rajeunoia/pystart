@@ -26,6 +26,17 @@ def write_questions_to_db(question, answer=""):
         conn.execute('insert into questions("id","question","answer") values (1,"'+question+'","'+answer+'")')
     conn.commit()    
     conn.close()
+
+@app.route('/print_qsts',methods = ['POST', 'GET'])
+def print_questions():
+    conn = sq.connect("pw_unknown_question.db")
+    qsts = ""
+    if table_exists(conn,"questions"):
+        result = conn.execute('select * from questions')
+        qsts = result.fetchall()
+        print(qsts)
+    conn.close()
+    return str(qsts)
     
 def table_exists(conn,table_name):
     result = conn.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='"+table_name+"'")
