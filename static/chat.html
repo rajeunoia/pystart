@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html>
+<head>
+</head>
+<body>
+    <div>
+    <p> <b>Talk to our Helper bot</b></p>
+    <textarea cols=100 rows=10 id="chatlog"></textarea>    
+    
+    <br>
+    <input type="text" id="msg" name="msg">
+
+    <button id="send">Send</button>
+    
+    <input type="text" style="visibility: hidden" id="resp" name="resp" value="Response will be here">
+    </div>
+    <div>
+        
+    <br><br>
+    <p> <b>Train Helper bot</b></p>
+    <input type="text" id="question" name="question"><br/>
+    <input type="text" id="answer" name="answer">
+    <button id="train"> Train </button>
+        
+    
+    
+    </div>
+
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"> </script>
+<script>
+
+
+$("#send").click(function(){
+    var msg=$("#msg").val();
+    $.get("http://127.0.0.1:5000/talk/"+msg,function(data,status){
+        //alert(data + " - "+ status);
+        $("#resp").val(data);
+        $("#chatlog").val($("#chatlog").val()+" \nYou:"+msg+" \nBot:"+data)
+        $("#msg").val("");
+    });
+});
+    
+$("#train").click(function(){
+    var qst=$("#question").val();
+    var ans=$("#answer").val();
+    $.get("http://127.0.0.1:5000/train?question="+qst+"&answer="+ans,function(data,status){
+        //alert(data + " - "+ status);
+        $("#question").val("");
+        $("#answer").val("");
+    });
+});
+</script>
+</html>

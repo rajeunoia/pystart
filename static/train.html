@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html>
+<head>
+</head>
+<body>
+    <!-- TO have a chat module uncomment this
+    <div>
+    <p> <b>Talk to our Helper bot</b></p>
+    <textarea cols=100 rows=10 id="chatlog"></textarea>    
+    
+    <br>
+    <input type="text" id="msg" name="msg">
+
+    <button id="send">Send</button>
+    
+    <input type="text" style="visibility: hidden" id="resp" name="resp" value="Response will be here">
+    </div> --> 
+    <div>
+        <br><br>
+        <p> <b>Fresh Training Single questions</b></p>
+        <input type="text" id="question" name="question"><br/>
+        <input type="text" id="answer" name="answer">
+        <button id="train"> Train </button>
+
+    </div>
+    
+    <div>
+        <div>
+            <br><br>
+            <p> <b>Answering the unanswered Chat questions</b></p>
+            <!--<textarea cols=100 rows=10 id="tmp_qsts"></textarea>-->
+        </div>
+        <div id="unans_questions">
+             
+            <!-- list of all questions as labels, answers as text boxes with a submit button to answer the unanswered question --> 
+            
+        </div>
+        
+    </div>
+    
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"> </script>
+<script>
+
+$(document).ready(function(){
+    $.get("../get_qsts",function(data,status){
+        var qsts = $.parseJSON(data);
+        var qsts_html = "";
+        //$("#tmp_qsts").val(qsts[2]);
+        //alert(qsts);
+        for(var i = 1;i<=Object.keys(qsts).length;i++) {
+            //alert(qsts[i]);
+            cont = build_qst_form(qsts[i], i);  
+            qsts_html = qsts_html + cont;
+        }
+        $("#unans_questions").html(qsts_html);
+            
+    });
+    
+    $('body').on('click', '[id^="btn"]', function() {
+        
+        var btn_id = this.id;
+        var id = btn_id.replace("btn","");
+        var qst=$("#qst"+id).val();
+        var ans=$("#ans"+id).val();
+
+        if(qst != "" && ans != "") {
+            $.get("../train?question="+qst+"&answer="+ans,function(data,status){
+
+            });
+            $.get("../remove_qst?id="+id,function(data,status){
+
+            });
+            
+        }
+        
+    });
+    
+
+    
+});
+
+$("#send").click(function(){
+    var msg=$("#msg").val();
+    $.get("../talk/"+msg,function(data,status){
+        //alert(data + " - "+ status);
+        $("#resp").val(data);
+        $("#chatlog").val($("#chatlog").val()+" \nYou:"+msg+" \nBot:"+data)
+        $("#msg").val("");
+    });
+});
+    
+$("#train").click(function(){
+    var qst=$("#question").val();
+    var ans=$("#answer").val();
+    $.get("../train?question="+qst+"&answer="+ans,function(data,status){
+        //alert(data + " - "+ status);
+        $("#question").val("");
+        $("#answer").val("");
+    });
+    $.get("../remove_qst?question="+qst+"&answer="+ans,function(data,status){
+        //alert(data + " - "+ status);
+        $("#question").val("");
+        $("#answer").val("");
+    });
+});
+
+
+
+
+function build_qst_form( qst,  i) {
+    html_qst = "<input type='text' id='qst" +i+"' value='"+qst+"' >";
+    html_qst = html_qst + "<input type='text' id='ans" +i+"' value='' >";
+    html_qst = html_qst + "<button type='text' id='btn" +i+"'>Submit</button> <br />";
+    //alert(html_qst);
+    //$("#tmp_qsts").val($("#tmp_qsts").val()+html_qst);
+    return html_qst;
+}    
+    
+</script>
+</html>

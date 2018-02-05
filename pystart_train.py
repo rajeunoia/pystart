@@ -72,14 +72,14 @@ def learn_from_json(filename):
     #print(faqs)
     chatbot.train(faqs)
 
-
+'''
 learn_from_json("./input/faqs_general.txt")
 learn_from_json("./input/faqs_extending.txt")
 learn_from_json("./input/faqs_gui.txt")
 learn_from_json("./input/faqs_library.txt")
 learn_from_json("./input/faqs_windows.txt")
 learn_from_json("./input/faqs_programming.txt")
-
+'''
 
 msg = ""
 # Get a response to the input text 'How are you?'

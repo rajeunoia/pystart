@@ -37,7 +37,35 @@ def print_questions():
         print(qsts)
     conn.close()
     return str(qsts)
-    
+
+@app.route('/get_qsts',methods = ['GET'])
+def get_questions_json():
+    conn = sq.connect("pw_unknown_question.db")
+    qsts = ""
+    questions = {}
+    if table_exists(conn,"questions"):
+        result = conn.execute('select * from questions')
+        qsts = result.fetchall()
+        for qst in qsts:
+            if(qst[2] == ""):
+                questions[qst[0]] = qst[1]
+                
+    conn.close()
+    return json.dumps(questions)
+
+@app.route('/remove_qst',methods = ['GET'])
+def remove_question():
+    conn = sq.connect("pw_unknown_question.db")
+    qsts = ""
+    questions = {}
+    id = request.args.get('id')   
+    if table_exists(conn,"questions"):
+        result = conn.execute('delete from questions where id = '+id)
+        conn.commit()        
+    conn.close()
+    return "ok",200  
+
+
 def table_exists(conn,table_name):
     result = conn.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='"+table_name+"'")
     result_data = result.fetchall()
@@ -66,7 +94,8 @@ def talk(msg="Hi"):
         reply = "Sorry Didn't get you? Try these questions "
         sample_questions = "Try: Will i get a job after training?  - "+ "When is the next workshop?   - " + "What is taught in 3 days workshop?"
         reply += sample_questions
-        write_questions_to_db(msg)
+        if reply not in msg:
+            write_questions_to_db(msg)
     else:
         reply = "Thanks for talking to me, see you soon."
     return reply
