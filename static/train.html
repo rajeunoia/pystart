@@ -47,11 +47,14 @@ $(document).ready(function(){
     $.get("../get_qsts",function(data,status){
         var qsts = $.parseJSON(data);
         var qsts_html = "";
+        var ind = "";
         //$("#tmp_qsts").val(qsts[2]);
         //alert(qsts);
-        for(var i = 1;i<=Object.keys(qsts).length;i++) {
+        var qst_keys = Object.keys(qsts);
+        for(var i = 0;i<qst_keys.length;i++) {
             //alert(qsts[i]);
-            cont = build_qst_form(qsts[i], i);  
+            ind = qst_keys[i];
+            cont = build_qst_form(qsts[ind], ind);  
             qsts_html = qsts_html + cont;
         }
         $("#unans_questions").html(qsts_html);
