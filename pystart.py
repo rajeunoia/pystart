@@ -164,13 +164,14 @@ def support():
 
 # this is for support_dev
 @app.route('/support_dev',methods = ['POST', 'GET'])
-def support():
+def support_dev():
     
     if request.method == 'GET':
         mode = request.args.get('hub.mode')    
         verify_tkn = request.args.get('hub.verify_token')    
         challenge = request.args.get('hub.challenge') 
-        if mode=="subscribe":
+        #and verify_token(verify_tkn)  #removed from below
+        if mode=="subscribe" :
             return challenge
     if request.method == 'POST':
         #handle_post_events(request) - if required
