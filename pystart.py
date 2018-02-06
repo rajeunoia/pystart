@@ -3,6 +3,7 @@ from chatterbot import ChatBot
 import json
 import sqlite3 as sq
 from pymessenger.bot import Bot
+from pymessenger import Element, Button
 from flask import Flask, redirect, url_for, request
 app = Flask(__name__)
 
