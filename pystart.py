@@ -107,6 +107,12 @@ def send_response(psid, response):
     #code to call graph api with response and token
     print(psid,response)
     client.send_text_message(psid,response)
+    buttons = []
+    button = Button(title='Register', type='web_url', url='http://pythonworkshops.com/register')
+    buttons.append(button)
+    button = Button(title='More questions', type='postback', payload='questions')
+    buttons.append(button)
+    client.send_button_message(psid,"Try: ",buttons)
 
 
 
@@ -155,7 +161,38 @@ def support():
                     
                     
     return "ok",200    
+
+# this is for support_dev
+@app.route('/support_dev',methods = ['POST', 'GET'])
+def support():
+    
+    if request.method == 'GET':
+        mode = request.args.get('hub.mode')    
+        verify_tkn = request.args.get('hub.verify_token')    
+        challenge = request.args.get('hub.challenge') 
+        if mode=="subscribe":
+            return challenge
+    if request.method == 'POST':
+        #handle_post_events(request) - if required
+        input_request_data = json.loads(request.data.decode('utf8'))
+        print("Input message - ",input_request_data)
+        if input_request_data["object"] == "page":
+            message_entries = input_request_data['entry']
+            for entry in message_entries:
+                for event in entry["messaging"]:
+                    if "message" in event:
+                        message = event["message"]
+                        sender_id = event["sender"]["id"]
+                        recipient_id = event["recipient"]["id"]
+                        resp = talk(message["text"])
+                        print("Output Response - ",resp)
+                        send_response(sender_id, resp)
+                    
+                    
+    return "ok",200    
  
+
+
 # secure method to train the bot, this should not be exposed to external people
 @app.route('/train',methods = ['GET'])
 def train():
