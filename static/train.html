@@ -46,6 +46,9 @@
 $(document).ready(function(){
     $.get("../get_qsts",function(data,status){
         var qsts = $.parseJSON(data);
+        if(qsts == "{}") {
+           return ;
+        }
         var qsts_html = "";
         var ind = "";
         //$("#tmp_qsts").val(qsts[2]);
@@ -102,11 +105,7 @@ $("#train").click(function(){
         $("#question").val("");
         $("#answer").val("");
     });
-    $.get("../remove_qst?question="+qst+"&answer="+ans,function(data,status){
-        //alert(data + " - "+ status);
-        $("#question").val("");
-        $("#answer").val("");
-    });
+
 });
 
 
