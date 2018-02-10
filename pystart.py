@@ -73,7 +73,7 @@ def send_response(psid, response):
 
 def testbot(psid):
     client.send_message(psid,"I am testing the bot")
-    client.send_attachment_url(psid,"download: ","")
+    #client.send_attachment_url(psid,"download: ","http://greenteapress.com/thinkpython/thinkpython.pdf")
     client.send_image_url(psid,"http://pythonworkshops.com/img/Raja.png")
     
     buttons = []
