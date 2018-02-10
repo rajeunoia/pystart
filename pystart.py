@@ -124,11 +124,14 @@ def support():
                         message = event["message"]
                         sender_id = event["sender"]["id"]
                         recipient_id = event["recipient"]["id"]
-                        resp = talk(message["text"])
-                        if(message["text"].upper() == "TEST BOT"):
-                            testbot(sender_id)
-                        print("Output Response - ",resp)
-                        send_response(sender_id, resp)
+                        if "text" in message:
+                            resp = talk(message["text"])
+                            if(message["text"].upper() == "TEST BOT"):
+                                testbot(sender_id)
+                            print("Output Response - ",resp)
+                            send_response(sender_id, resp)
+                        else:
+                            print("None text message or event -", message)
                     
                     
     return "ok",200    
