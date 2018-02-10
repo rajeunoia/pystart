@@ -41,7 +41,7 @@ def remove_qst():
 
 #handle message
 @app.route('/talk/<msg>',methods = ['POST', 'GET'])
-def talk(msg="Hi"):
+def talk(msg="Hi", sender_id=0):
     chatbot = ChatBot(
         'Pyson',
         trainer='chatterbot.trainers.ListTrainer',
@@ -53,10 +53,9 @@ def talk(msg="Hi"):
     if(resp.confidence > 0.5 and msg.upper() != "BYE"):
         reply = resp.serialize()
         reply = reply["text"]
-    elif(msg.upper() != "BYE"):
-        reply = "Sorry Didn't get you? Try these questions "
-        sample_questions = "Try: Will i get a job after training?  - "+ "When is the next workshop?   - " + "What is taught in 3 days workshop?"
-        reply += sample_questions
+    elif(msg.upper() != "BYE" and msg.upper() != "TEST BOT" ):
+        reply = "NA"
+        send_sample_questions(sender_id)
         if reply not in msg:
             pytraining.write_questions_to_db(msg)
     else:
@@ -75,13 +74,25 @@ def testbot(psid):
     client.send_message(psid,"I am testing the bot")
     #client.send_attachment_url(psid,"download: ","http://greenteapress.com/thinkpython/thinkpython.pdf")
     client.send_image_url(psid,"http://pythonworkshops.com/img/Raja.png")
-    
+
+def send_sample_questions(psid):
     buttons = []
-    button = Button(title='Register', type='web_url', url='http://pythonworkshops.com/register')
+    buttons.append(postback_button("Will i get a job after training?","Sample questions"))
+    buttons.append(postback_button("When is the next workshop?","Sample questions"))
+    buttons.append(postback_button("What is taught in 3 days workshop?","Sample questions"))
+    client.send_button_message(psid,"Sorry Didn't get you? Try these questions,  ",buttons)
+    
+def link_button(button_title="Register",button_url="http://pythonworkshops.com/register"):    
+    button = Button(title=button_title, type='web_url', url=button_url)
+    return button
+
+def postback_button(button_title="How can i register?",button_payload="Sample questions"):    
+    button = Button(title=button_title, type='postback', payload=button_payload)
+    return button
+    
+    '''button = Button(title='More questions', type='postback', payload='questions')
     buttons.append(button)
-    button = Button(title='More questions', type='postback', payload='questions')
-    buttons.append(button)
-    client.send_button_message(psid,"Try: ",buttons)
+    client.send_button_message(psid,"Try: ",buttons)'''
 
 
 
@@ -125,11 +136,12 @@ def support():
                         sender_id = event["sender"]["id"]
                         recipient_id = event["recipient"]["id"]
                         if "text" in message:
-                            resp = talk(message["text"])
                             if(message["text"].upper() == "TEST BOT"):
                                 testbot(sender_id)
-                            print("Output Response - ",resp)
-                            send_response(sender_id, resp)
+                            else:
+                                resp = talk(message["text"])
+                                print("Output Response - ",resp)
+                                send_response(sender_id, resp)
                         else:
                             print("None text message or event -", message)
                     
