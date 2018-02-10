@@ -139,7 +139,7 @@ def support():
                             if(message["text"].upper() == "TEST BOT"):
                                 testbot(sender_id)
                             else:
-                                resp = talk(message["text"])
+                                resp = talk(message["text"],sender_id)
                                 print("Output Response - ",resp)
                                 send_response(sender_id, resp)
                         else:
