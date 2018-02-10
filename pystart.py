@@ -53,8 +53,6 @@ def talk(msg="Hi"):
     if(resp.confidence > 0.5 and msg.upper() != "BYE"):
         reply = resp.serialize()
         reply = reply["text"]
-    elif(msg.upper() != "TEST BOT"):
-        testbot()
     elif(msg.upper() != "BYE"):
         reply = "Sorry Didn't get you? Try these questions "
         sample_questions = "Try: Will i get a job after training?  - "+ "When is the next workshop?   - " + "What is taught in 3 days workshop?"
@@ -127,6 +125,8 @@ def support():
                         sender_id = event["sender"]["id"]
                         recipient_id = event["recipient"]["id"]
                         resp = talk(message["text"])
+                        if(message["text"].upper() == "TEST BOT"):
+                            testbot(sender_id)
                         print("Output Response - ",resp)
                         send_response(sender_id, resp)
                     
