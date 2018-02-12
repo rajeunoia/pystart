@@ -121,7 +121,7 @@ def handle_postback(psid,recieved_postback):
 # Create a new chat bot named Pyson
 @app.route('/support',methods = ['POST', 'GET'])
 def support():
-    
+    global client
     if request.method == 'GET':
         mode = request.args.get('hub.mode')    
         verify_tkn = request.args.get('hub.verify_token')    
