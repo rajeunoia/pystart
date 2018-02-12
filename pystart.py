@@ -11,12 +11,16 @@ app = Flask(__name__)
 
 
 #Get access token 
-def get_access_token():
-    token = "EAAbTWtBx3EEBAPICjzhEI3fuZB2BjvZBEpZArTq8XZAwnnFeI5BqFYPTT8TgJpaLEYOGs8L0NHE1ZALwZCoK4PnGyBCRl0ULBq9Ygw4IjCxZCneYNsV3kQLZApummj4y054rpTZCEySxLAZCuqHhymfMAqMzi9LqSMGxVRsfOLwExx1QZDZD"
+def get_access_token(page):
+    if page.upper() == "PYTHONWORKSHOPS":
+        token = "EAAbTWtBx3EEBAPICjzhEI3fuZB2BjvZBEpZArTq8XZAwnnFeI5BqFYPTT8TgJpaLEYOGs8L0NHE1ZALwZCoK4PnGyBCRl0ULBq9Ygw4IjCxZCneYNsV3kQLZApummj4y054rpTZCEySxLAZCuqHhymfMAqMzi9LqSMGxVRsfOLwExx1QZDZD"
+    elif page.upper() == "ESCHOOL":
+        token = "EAAbTWtBx3EEBAIxRbuQOkZAsFQJI6yCU0gdUcZApdhgVJN22eJvPVJbdlLcwmf1WwEwdZCnAXTHdtCbJfmIpKPAoafIxahgjy0ZCYbbbwbsvAdBBBlflljiSX00U3DI5Pzr4pQyVE3caz3iMKH8PYR4HXXymr8fQWC1aKrkQ6wZDZD"
+
     return token
     
 
-client = Bot(get_access_token())  
+client = Bot(get_access_token("PYTHONWORKSHOPS"))  
 
 
 
@@ -77,9 +81,10 @@ def testbot(psid):
 
 def send_sample_questions(psid):
     buttons = []
-    buttons.append(postback_button("Will i get a job after training?","Sample questions"))
-    buttons.append(postback_button("When is the next workshop?","Sample questions"))
-    buttons.append(postback_button("What is taught in 3 days workshop?","Sample questions"))
+    buttons.append(postback_button("Job Assurance?","Sample questions"))
+    buttons.append(postback_button("Next workshop?","Sample questions"))
+    buttons.append(postback_button("Schedule 3days workshop?","Sample questions"))
+    buttons.append(postback_button("Workshop cost?","Sample questions"))
     client.send_button_message(psid,"Sorry Didn't get you? Try these questions,  ",buttons)
     
 def link_button(button_title="Register",button_url="http://pythonworkshops.com/register"):    
@@ -130,25 +135,39 @@ def support():
         if input_request_data["object"] == "page":
             message_entries = input_request_data['entry']
             for entry in message_entries:
-                for event in entry["messaging"]:
-                    if "message" in event:
-                        message = event["message"]
-                        sender_id = event["sender"]["id"]
-                        recipient_id = event["recipient"]["id"]
-                        if "text" in message:
-                            if(message["text"].upper() == "TEST BOT"):
-                                testbot(sender_id)
+                if "messaging" in entry:
+                    for event in entry["messaging"]:
+                        if "message" in event:
+                            message = event["message"]
+                            sender_id = event["sender"]["id"]
+                            recipient_id = event["recipient"]["id"]
+                            if recipient_id == "483637655052155":
+                                client = Bot(get_access_token("ESCHOOL"))  
+
+                            if "text" in message:
+                                if(message["text"].upper() == "TEST BOT"):
+                                    testbot(sender_id)
+                                else:
+                                    resp = talk(message["text"],sender_id)
+                                    print("Output Response - ",resp)
+                                    send_response(sender_id, resp)
                             else:
-                                resp = talk(message["text"],sender_id)
-                                print("Output Response - ",resp)
-                                send_response(sender_id, resp)
-                        else:
-                            print("None text message or event -", message)
+                                print("None text message or event -", message)
                     
                     
     return "ok",200    
 
+'''
+Facebook Message formats
+Text:
+{'object': 'page', 'entry': [{'id': '2002681600054130', 'time': 1518265153750, 'messaging': [{'sender': {'id': '1752240531482295'}, 'recipient': {'id': '2002681600054130'}, 'timestamp': 1518265153172, 'message': {'mid': 'mid.$cAAcdbYf4xGtnsOz-lFhf6e0eExAp', 'seq': 63833, 'text': 'I dont know'}}]}]}
 
+Postback:
+{'object': 'page', 'entry': [{'id': '2002681600054130', 'time': 1518265683774, 'standby': [{'recipient': {'id': '2002681600054130'}, 'timestamp': 1518265683774, 'sender': {'id': '1752240531482295'}, 'postback': {'title': 'What is taught in 3 ...'}}]}]}
+
+
+
+'''
 
 # secure method to train the bot, this should not be exposed to external people
 @app.route('/train',methods = ['GET'])
