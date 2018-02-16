@@ -2,6 +2,14 @@ import json
 import sqlite3 as sq
 
 
+def table_exists(conn,table_name):
+    result = conn.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='"+table_name+"'")
+    result_data = result.fetchall()
+    if len(result_data)>0 and result_data[0][0] == table_name:
+        return True
+    else: 
+        return False
+
 def insert_page(page_data):
     conn = sq.connect("bot_admin.db")
     if table_exists(conn,"connected_pages"):
@@ -12,10 +20,4 @@ def insert_page(page_data):
     conn.commit()    
     conn.close()
     
-def table_exists(conn,table_name):
-    result = conn.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='"+table_name+"'")
-    result_data = result.fetchall()
-    if len(result_data)>0 and result_data[0][0] == table_name:
-        return True
-    else: 
-        return False
+
