@@ -25,7 +25,7 @@ def insert_page(page_data):
 def print_pages():
     conn = sq.connect(admin_db_name)
     pages = ""
-    if table_exists(conn,pages_table):
+    if admin_table_exists(conn,pages_table):
         result = conn.execute('select * from '+pages_table)
         pages = result.fetchall()
         print(qsts)
