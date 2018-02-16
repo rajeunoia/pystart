@@ -1,7 +1,8 @@
 import json
 import sqlite3 as sq
 
-
+admin_db_name = "bot_admin.db"
+pages_table = "connected_pages"
 def admin_table_exists(conn,table_name):
     result = conn.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='"+table_name+"'")
     result_data = result.fetchall()
@@ -11,8 +12,8 @@ def admin_table_exists(conn,table_name):
         return False
 
 def insert_page(page_data):
-    conn = sq.connect("bot_admin.db")
-    if admin_table_exists(conn,"connected_pages"):
+    conn = sq.connect(admin_db_name)
+    if admin_table_exists(conn,pages_table):
         conn.execute('insert into connected_pages("user_id","page_id","page_name","page_token") values ("'+page_data["userid"]+'","'+page_data["pageid"]+'","'+page_data["pagename"]+'","'+page_data["pagetoken"]+'")')
     else:
         conn.execute('create table  connected_pages ("id" INTEGER PRIMARY KEY AUTOINCREMENT,"user_id" CHAR(30) NOT NULL,"page_id" CHAR(30), "page_name" CHAR(30), "page_token" CHAR(200))')
@@ -21,3 +22,12 @@ def insert_page(page_data):
     conn.close()
     
 
+def print_pages():
+    conn = sq.connect(admin_db_name)
+    pages = ""
+    if table_exists(conn,pages_table):
+        result = conn.execute('select * from '+pages_table)
+        pages = result.fetchall()
+        print(qsts)
+    conn.close()
+    return str(pages)

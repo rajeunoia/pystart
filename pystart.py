@@ -74,6 +74,12 @@ def add_page_to_app():
     fb.insert_page(request.form)
     return "ok",200  
 
+@app.route('/print_admin_pages',methods = ['POST','GET'])
+def print_admin_pages():
+    page_data = fb.print_pages()
+    return str(page_data) 
+
+
 #return response to messenger
 def send_response(psid, response):
     #code to call graph api with response and token
