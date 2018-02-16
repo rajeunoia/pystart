@@ -10,7 +10,7 @@ def write_questions_to_db(question, answer=""):
     if table_exists(conn,"questions"):
         conn.execute('insert into questions("question","answer") values ("'+question+'","'+answer+'")')
     else:
-        conn.execute('create table  questions ("id" INTEGER PRIMARY KEY AUTOINCREMENT,"question" CHAR(100) NOT NULL,"answer" CHAR(100))')
+        conn.execute('create table  questions ("id" INTEGER PRIMARY KEY AUTOINCREMENT,"question" CHAR(100) NOT NULL,"answer" CHAR(1000))')
         conn.execute('insert into questions("id","question","answer") values (1,"'+question+'","'+answer+'")')
     conn.commit()    
     conn.close()
@@ -61,7 +61,5 @@ def table_exists(conn,table_name):
         return True
     else: 
         return False
-
-
 
 

@@ -5,6 +5,7 @@ import sqlite3 as sq
 from pymessenger.bot import Bot
 from pymessenger import Element, Button
 from training import pytraining
+from connects import facebook as fb
 from flask import Flask, redirect, url_for, request
 app = Flask(__name__)
 
@@ -54,7 +55,7 @@ def talk(msg="Hi", sender_id=0):
     #msg = "Hi"
     reply = ""
     resp = chatbot.get_response(msg)
-    if(resp.confidence > 0.5 and msg.upper() != "BYE"):
+    if(resp.confidence > 0.8 and msg.upper() != "BYE"):
         reply = resp.serialize()
         reply = reply["text"]
     elif(msg.upper() != "BYE" and msg.upper() != "TEST BOT" ):
@@ -67,6 +68,10 @@ def talk(msg="Hi", sender_id=0):
     return reply
 
 
+@app.route('/add_page_to_app',methods = ['POST'])
+def add_page_to_app():
+    fb.insert_page(request.form)
+    return "ok",200  
 
 #return response to messenger
 def send_response(psid, response):

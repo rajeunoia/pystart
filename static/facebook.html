@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html>
+<head>
+</head>
+<body>
+<fb:login-button 
+  scope="manage_pages"
+  onlogin="checkLoginState();">
+</fb:login-button>
+    <br/>
+<button onclick="logout()">Logout</button>
+    
+<div id="fbdata">Data from Facebook</div>
+    
+    
+</body>    
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '1921236857904193',
+      cookie     : true,
+      xfbml      : true,
+      version    : 'v2.11'
+    });
+      
+    FB.AppEvents.logPageView();   
+      
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "https://connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+   
+    function checkLoginState() {
+        FB.getLoginStatus(function(response) {
+            statusChangeCallback(response);
+        });
+    }
+    
+    function statusChangeCallback(response) {
+        alert(response.status);
+        console.log(response);
+        FB.api("https://graph.facebook.com/me/accounts",function(response){
+            console.log("Inside accounts - ");
+            console.log(response);
+            var fbdata = response.data;
+            var pages_html = "";
+            for (var i=0;i<fbdata.length;i++){
+                pages_html +=  build_page_form( response.data[i].name,response.data[i].id,response.data[i].access_token,  i)
+                
+            }
+            document.getElementById('fbdata').innerHTML = pages_html;
+            
+        });
+        FB.api('/me', function(response) {
+            console.log(response);
+            document.getElementById('fbdata').innerHTML +=
+                    '<br /> ' + response.name + '!';
+        });
+    }
+    function logout() {
+        FB.logout(function(response){
+           console.log(response);
+            
+        });
+    }
+    
+    function build_page_form( name,id,token,  i) {
+        html_page = "<input type='text' id='pagename" +i+"' value='"+name+"' >";
+        html_page +=   "<input type='text' id='pageid" +i+"' value='"+id+"' >";
+        html_page +=   "<input type='text' id='pagetoken" +i+"' value='"+token+"'>";
+        html_page +=   "<button id='page" +i+"'>Integrate Page</button> <br />";
+        //alert(html_qst);
+        //$("#tmp_qsts").val($("#tmp_qsts").val()+html_qst);
+        return html_page;
+    }  
+    
+</script>
+    
+</html>
