@@ -9,7 +9,7 @@ from connects import facebook as fb
 from flask import Flask, redirect, url_for, request
 from flask_cors import CORS
 app = Flask(__name__)
-
+CORS(app)
 
 
 #Get access token 
@@ -70,7 +70,6 @@ def talk(msg="Hi", sender_id=0):
 
 
 @app.route('/add_page_to_app',methods = ['POST'])
-@cross_origin()
 def add_page_to_app():
     fb.insert_page(request.form)
     return "ok",200  
