@@ -28,6 +28,6 @@ def print_pages():
     if admin_table_exists(conn,pages_table):
         result = conn.execute('select * from '+pages_table)
         pages = result.fetchall()
-        print(qsts)
+        print(pages)
     conn.close()
     return str(pages)
