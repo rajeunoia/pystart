@@ -12,7 +12,7 @@
 <button onclick="logout()">Logout</button>
     
 <div id="fbdata">Data from Facebook</div>
-    
+<input type="hidden" id="userid" />    
     
 </body>    
 <script>
@@ -59,8 +59,7 @@
         });
         FB.api('/me', function(response) {
             console.log(response);
-            document.getElementById('fbdata').innerHTML +=
-                    '<br /> ' + response.name + '!';
+            $("#userid").val(response.id);
         });
     }
     function logout() {
@@ -74,12 +73,39 @@
         html_page = "<input type='text' id='pagename" +i+"' value='"+name+"' >";
         html_page +=   "<input type='text' id='pageid" +i+"' value='"+id+"' >";
         html_page +=   "<input type='text' id='pagetoken" +i+"' value='"+token+"'>";
-        html_page +=   "<button id='page" +i+"'>Integrate Page</button> <br />";
+        html_page +=   "<button id='btn" +i+"'>Integrate Page</button> <br />";
         //alert(html_qst);
         //$("#tmp_qsts").val($("#tmp_qsts").val()+html_qst);
         return html_page;
     }  
     
-</script>
     
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"> </script>
+<script>
+$(document).ready(function(){
+    $('body').on('click', '[id^="btn"]', function() {
+        
+        var btn_id = this.id;
+        var id = btn_id.replace("btn","");
+        var pagename=$("#pagename"+id).val();
+        var pageid=$("#pageid"+id).val();
+        var pagetoken=$("#pagetoken"+id).val();
+        var userid=$("#userid").val();
+
+        if(pagename != "" && pageid != "" && pagetoken != "" && userid != "" ) {
+            input_data = {pagename: pagename, pageid: pageid, pagetoken:pagetoken, userid:userid};
+            $.post("https://pystart.herokuapp.com/add_page_to_app", input_data,function(data,status){
+                console.log(status + " - " + data);
+            });
+  
+            
+        }
+        
+    });
+    
+});
+    
+    
+</script>    
 </html>
