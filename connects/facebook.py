@@ -11,3 +11,11 @@ def insert_page(page_data):
         conn.execute('insert into connected_pages("id","user_id","page_id","page_name","page_token") values (1,"'+page_data["userid"]+'","'+page_data["pageid"]+'","'+page_data["pagename"]+'","'+page_data["pagetoken"]+'")')
     conn.commit()    
     conn.close()
+    
+def table_exists(conn,table_name):
+    result = conn.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='"+table_name+"'")
+    result_data = result.fetchall()
+    if len(result_data)>0 and result_data[0][0] == table_name:
+        return True
+    else: 
+        return False
