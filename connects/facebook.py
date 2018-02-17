@@ -31,3 +31,18 @@ def print_pages():
         print(pages)
     conn.close()
     return str(pages)
+
+
+def get_token_for_page(page_id):
+    conn = sq.connect(admin_db_name)
+    pages = ""
+    token = None
+    if admin_table_exists(conn,pages_table):
+        result = conn.execute("select * from "+pages_table +" where page_id == '"+page_id+"'")
+        pages = result.fetchall()
+        print(pages)
+    if len(pages) > 0:
+        token = page[0][4]
+    conn.close()
+    return token
+    

@@ -13,11 +13,14 @@ CORS(app)
 
 
 #Get access token 
-def get_access_token(page):
-    if page.upper() == "PYTHONWORKSHOPS":
+def get_access_token(page_id):
+    token = fb.get_token_for_page(page_id)
+    '''if page.upper() == "PYTHONWORKSHOPS":
         token = "EAAbTWtBx3EEBAPICjzhEI3fuZB2BjvZBEpZArTq8XZAwnnFeI5BqFYPTT8TgJpaLEYOGs8L0NHE1ZALwZCoK4PnGyBCRl0ULBq9Ygw4IjCxZCneYNsV3kQLZApummj4y054rpTZCEySxLAZCuqHhymfMAqMzi9LqSMGxVRsfOLwExx1QZDZD"
     elif page.upper() == "ESCHOOL":
-        token = "EAAbTWtBx3EEBAIxRbuQOkZAsFQJI6yCU0gdUcZApdhgVJN22eJvPVJbdlLcwmf1WwEwdZCnAXTHdtCbJfmIpKPAoafIxahgjy0ZCYbbbwbsvAdBBBlflljiSX00U3DI5Pzr4pQyVE3caz3iMKH8PYR4HXXymr8fQWC1aKrkQ6wZDZD"
+        token = "EAAbTWtBx3EEBAIxRbuQOkZAsFQJI6yCU0gdUcZApdhgVJN22eJvPVJbdlLcwmf1WwEwdZCnAXTHdtCbJfmIpKPAoafIxahgjy0ZCYbbbwbsvAdBBBlflljiSX00U3DI5Pzr4pQyVE3caz3iMKH8PYR4HXXymr8fQWC1aKrkQ6wZDZD"'''
+    if token == None: 
+        token = "EAAbTWtBx3EEBAPICjzhEI3fuZB2BjvZBEpZArTq8XZAwnnFeI5BqFYPTT8TgJpaLEYOGs8L0NHE1ZALwZCoK4PnGyBCRl0ULBq9Ygw4IjCxZCneYNsV3kQLZApummj4y054rpTZCEySxLAZCuqHhymfMAqMzi9LqSMGxVRsfOLwExx1QZDZD"
 
     return token
     
