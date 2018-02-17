@@ -25,7 +25,7 @@ def get_access_token(page_id):
     return token
     
 
-client = Bot(get_access_token("PYTHONWORKSHOPS"))  
+client = Bot(get_access_token("2002681600054130"))  
 
 
 
@@ -117,16 +117,6 @@ def postback_button(button_title="How can i register?",button_payload="Sample qu
 
 
 
-#Verify Token 
-@app.route('/token',methods = ['POST', 'GET'])
-def verify_token(verify_tkn):
-    token = get_access_token()
-    if(verify_token==token):
-        return True
-    else:
-        return False
-
-
 #handle postback
 def handle_postback(psid,recieved_postback):
     
@@ -156,8 +146,8 @@ def support():
                             message = event["message"]
                             sender_id = event["sender"]["id"]
                             recipient_id = event["recipient"]["id"]
-                            if recipient_id == "483637655052155":
-                                client = Bot(get_access_token("ESCHOOL"))  
+                            if "id" in entry:
+                                client = Bot(get_access_token(entry["id"]))  
 
                             if "text" in message:
                                 if(message["text"].upper() == "TEST BOT"):
