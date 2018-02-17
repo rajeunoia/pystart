@@ -42,7 +42,7 @@ def get_token_for_page(page_id):
         pages = result.fetchall()
         print(pages)
     if len(pages) > 0:
-        token = page[0][4]
+        token = pages[0][4]
     conn.close()
     return token
     
