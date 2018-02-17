@@ -14,7 +14,8 @@ def admin_table_exists(conn,table_name):
 def insert_page(page_data):
     conn = sq.connect(admin_db_name)
     if admin_table_exists(conn,pages_table):
-        conn.execute('insert into connected_pages("user_id","page_id","page_name","page_token") values ("'+page_data["userid"]+'","'+page_data["pageid"]+'","'+page_data["pagename"]+'","'+page_data["pagetoken"]+'")')
+        if get_token_for_page(page_data["pageid"]) != page_data["pagetoken"]:
+            conn.execute('insert into connected_pages("user_id","page_id","page_name","page_token") values ("'+page_data["userid"]+'","'+page_data["pageid"]+'","'+page_data["pagename"]+'","'+page_data["pagetoken"]+'")')
     else:
         conn.execute('create table  connected_pages ("id" INTEGER PRIMARY KEY AUTOINCREMENT,"user_id" CHAR(30) NOT NULL,"page_id" CHAR(30), "page_name" CHAR(30), "page_token" CHAR(200))')
         conn.execute('insert into connected_pages("id","user_id","page_id","page_name","page_token") values (1,"'+page_data["userid"]+'","'+page_data["pageid"]+'","'+page_data["pagename"]+'","'+page_data["pagetoken"]+'")')
